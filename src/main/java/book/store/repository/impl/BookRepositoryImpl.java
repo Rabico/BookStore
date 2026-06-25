@@ -17,7 +17,7 @@ public class BookRepositoryImpl implements BookRepository {
     private final EntityManagerFactory entityManagerFactory;
 
     @Override
-    public Book save(Book book) {
+    public Book createBook(Book book) {
         EntityTransaction transaction = null;
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             transaction = entityManager.getTransaction();
@@ -34,14 +34,14 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> findAll() {
+    public List<Book> getAll() {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             return entityManager.createQuery("SELECT b FROM Book b", Book.class).getResultList();
         }
     }
 
     @Override
-    public Optional<Book> findById(long id) {
+    public Optional<Book> getBookById(Long id) {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             Book book = entityManager.find(Book.class, id);
             return book != null ? Optional.of(book) : Optional.empty();

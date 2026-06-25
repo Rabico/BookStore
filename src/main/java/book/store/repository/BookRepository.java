@@ -6,9 +6,9 @@ import java.util.Optional;
 
 public interface BookRepository {
 
-    Book save(Book book);
+    Book createBook(Book book);
 
-    List<Book> findAll();
+    List<Book> getAll();
 
-    Optional<Book> findById(long id);
+    Optional<Book> getBookById(Long id);
 }
