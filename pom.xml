@@ -77,6 +77,10 @@
             <artifactId>mapstruct</artifactId>
             <version>1.5.5.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-liquibase</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -162,6 +166,12 @@
                     <linkXRef>false</linkXRef>
                     <sourceDirectories>src</sourceDirectories>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <!-- Configuration, if necessary -->
             </plugin>
         </plugins>
     </build>
