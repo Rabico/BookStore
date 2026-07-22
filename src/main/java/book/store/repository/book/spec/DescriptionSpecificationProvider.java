@@ -9,15 +9,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DescriptionSpecificationProvider implements SpecificationProvider<Book> {
 
-    private static final String DESC_KEY = "description";
-
     @Override
     public String getKey() {
-        return DESC_KEY;
+        return SpecificationName.DESCRIPTION.getValue();
     }
 
     public Specification<Book> getSpecification(String[] params) {
         return (root, query, criteriaBuilder)
-                -> root.get("description").in(List.of(params));
+                -> root.get(SpecificationName.DESCRIPTION.getValue()).in(List.of(params));
     }
 }

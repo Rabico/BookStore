@@ -4,6 +4,7 @@ import book.store.dto.BookSearchParametersDto;
 import book.store.model.Book;
 import book.store.repository.SpecificationBuilder;
 import book.store.repository.SpecificationProviderManager;
+import book.store.repository.book.spec.SpecificationName;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -20,25 +21,25 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
     @Override
     public Specification<Book> build(BookSearchParametersDto searchParameters) {
         Specification<Book> spec = (Root<Book> root, CriteriaQuery<?> query,
-                                    CriteriaBuilder cb) -> null;
+                                    CriteriaBuilder cb) -> cb.conjunction();
         if (searchParameters.authors() != null && searchParameters.authors().length > 0) {
             spec = spec.and(specificationProviderManager
-                    .getSpecificationProvider("author")
+                    .getSpecificationProvider(SpecificationName.AUTHOR.getValue())
                     .getSpecification(searchParameters.authors()));
         }
         if (searchParameters.titles() != null && searchParameters.titles().length > 0) {
             spec = spec.and(specificationProviderManager
-                    .getSpecificationProvider("title")
+                    .getSpecificationProvider(SpecificationName.TITTLE.getValue())
                     .getSpecification(searchParameters.titles()));
         }
         if (searchParameters.isbns() != null && searchParameters.isbns().length > 0) {
             spec = spec.and(specificationProviderManager
-                    .getSpecificationProvider("isbn")
+                    .getSpecificationProvider(SpecificationName.ISBN.getValue())
                     .getSpecification(searchParameters.isbns()));
         }
         if (searchParameters.descriptions() != null && searchParameters.descriptions().length > 0) {
             spec = spec.and(specificationProviderManager
-                    .getSpecificationProvider("description")
+                    .getSpecificationProvider(SpecificationName.DESCRIPTION.getValue())
                     .getSpecification(searchParameters.descriptions()));
         }
         return spec;
