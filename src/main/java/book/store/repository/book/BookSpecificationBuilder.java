@@ -15,36 +15,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
 
-    private final SpecificationProviderManager<Book> authorSpecificationProviderManager;
+    private final SpecificationProviderManager<Book> specificationProviderManager;
 
     @Override
     public Specification<Book> build(BookSearchParametersDto searchParameters) {
         Specification<Book> spec = (Root<Book> root, CriteriaQuery<?> query,
                                     CriteriaBuilder cb) -> null;
         if (searchParameters.authors() != null && searchParameters.authors().length > 0) {
-            spec = spec.and(authorSpecificationProviderManager
+            spec = spec.and(specificationProviderManager
                     .getSpecificationProvider("author")
                     .getSpecification(searchParameters.authors()));
         }
         if (searchParameters.titles() != null && searchParameters.titles().length > 0) {
-            spec = spec.and(authorSpecificationProviderManager
+            spec = spec.and(specificationProviderManager
                     .getSpecificationProvider("title")
                     .getSpecification(searchParameters.titles()));
         }
         if (searchParameters.isbns() != null && searchParameters.isbns().length > 0) {
-            spec = spec.and(authorSpecificationProviderManager
+            spec = spec.and(specificationProviderManager
                     .getSpecificationProvider("isbn")
                     .getSpecification(searchParameters.isbns()));
         }
         if (searchParameters.descriptions() != null && searchParameters.descriptions().length > 0) {
-            spec = spec.and(authorSpecificationProviderManager
+            spec = spec.and(specificationProviderManager
                     .getSpecificationProvider("description")
                     .getSpecification(searchParameters.descriptions()));
-        }
-        if (searchParameters.coverImages() != null && searchParameters.coverImages().length > 0) {
-            spec = spec.and(authorSpecificationProviderManager
-                    .getSpecificationProvider("coverImage")
-                    .getSpecification(searchParameters.coverImages()));
         }
         return spec;
     }
