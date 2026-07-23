@@ -11,17 +11,18 @@ import org.hibernate.validator.constraints.URL;
 
 @Data
 public class CreateBookRequestDto {
-    @NotBlank(message = "Tittle must not be blank")
-    @Size(max = 30, message = "Tittle must not exceed 30 characters")
+    @NotBlank(message = "Title must not be blank")
+    @Size(max = 30, message = "Title must not exceed 30 characters")
     private String title;
-    @NotBlank(message = "Tittle must not be blank")
+    @NotBlank(message = "Title must not be blank")
     @Size(max = 30, message = "Author must not exceed 30 characters")
     private String author;
+    @NotBlank(message = "ISBN must not be blank")
     @NotNull(message = "ISBN is required")
     @ISBN(message = "ISBN must have ISBN pattern")
     private String isbn;
     @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.0", message = "Price must be greater than zero")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
     private BigDecimal price;
     @Size(max = 100, message = "Author must not exceed 100 characters")
     private String description;
