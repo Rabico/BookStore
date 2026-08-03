@@ -1,7 +1,7 @@
 package book.store.repository.book.spec;
 
 public enum SpecificationName {
-    TITTLE("tittle"),
+    TITLE("title"),
     AUTHOR("author"),
     DESCRIPTION("description"),
     ISBN("isbn");

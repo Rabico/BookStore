@@ -10,13 +10,13 @@ public class TitleSpecificationProvider implements SpecificationProvider<Book> {
 
     @Override
     public String getKey() {
-        return SpecificationName.TITTLE.getValue();
+        return SpecificationName.TITLE.getValue();
     }
 
     public Specification<Book> getSpecification(String[] params) {
         return (root, query, criteriaBuilder)
                 -> criteriaBuilder.like(
-                criteriaBuilder.lower(root.get(SpecificationName.TITTLE.getValue())),
+                criteriaBuilder.lower(root.get(SpecificationName.TITLE.getValue())),
                 "%" + params[0].toLowerCase() + "%");
     }
 }
