@@ -25,7 +25,7 @@ public class AuthenticationController {
     @Operation(summary = "Register a new user",
             description = "Confirms the provided data, registers a new user,"
                     + " and returns the created user.")
-    public UserResponseDto registration(@RequestBody @Valid
+    public UserResponseDto register(@RequestBody @Valid
                                             UserRegistrationRequestDto userRegistrationRequestDto)
             throws RegistrationException {
 
