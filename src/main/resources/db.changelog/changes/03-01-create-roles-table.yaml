@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-roles-table
+      author: pcizminski
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_roles
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: role
+                  type: VARCHAR(255)
+            tableName: roles
+  - changeSet:
+      id: add-unique-constraint-to-roles-role
+      author: pcizminski
+      changes:
+        - addUniqueConstraint:
+            columnNames: role
+            constraintName: uc_roles_role
+            tableName: roles
