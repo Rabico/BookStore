@@ -33,7 +33,10 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.toModel(userRegistrationRequestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Set.of(roleRepository.findByRole(Role.RoleName.USER)));
+        Role userRole = roleRepository.findByRole(Role.RoleName.USER)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Default USER role not found"));
+        user.setRoles(Set.of(userRole));
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
