@@ -21,9 +21,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_HEADER_PREFIX = "Bearer ";
+    private static final Integer SUBSTRING_BEGIN = 7;
 
-    private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken)
                 && bearerToken.startsWith(AUTHORIZATION_HEADER_PREFIX)) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(SUBSTRING_BEGIN);
         }
         return null;
     }

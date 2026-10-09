@@ -4,7 +4,6 @@ import book.store.dto.user.UserLoginRequestDto;
 import book.store.dto.user.UserLoginResponseDto;
 import book.store.dto.user.UserRegistrationRequestDto;
 import book.store.dto.user.UserResponseDto;
-import book.store.exception.RegistrationException;
 import book.store.security.AuthenticationService;
 import book.store.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,8 +37,7 @@ public class AuthenticationController {
             description = "Confirms the provided data, registers a new user,"
                     + " and returns the created user.")
     public UserResponseDto register(@RequestBody @Valid
-                                            UserRegistrationRequestDto userRegistrationRequestDto)
-            throws RegistrationException {
+                                            UserRegistrationRequestDto userRegistrationRequestDto) {
 
         return userService.register(userRegistrationRequestDto);
     }
