@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-users-roles-table
+      author: pcizminski
+      changes:
+        - createTable:
+            columns:
+              - column:
+                    constraints:
+                      nullable: false
+                      primaryKey: true
+                      primaryKeyName: pk_users_roles
+                    name: users_id
+                    type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users_roles
+                  name: roles_id
+                  type: BIGINT
+            tableName: users_roles
