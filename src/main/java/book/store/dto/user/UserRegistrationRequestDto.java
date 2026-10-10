@@ -9,18 +9,18 @@ import org.hibernate.validator.constraints.Length;
 @FieldMatch(first = "password", second = "repeatPassword")
 public class UserRegistrationRequestDto {
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email must not be blank")
+    @Email(message = "Email is required")
     private String email;
-    @NotBlank
-    @Length(min = 8, max = 20)
+    @NotBlank(message = "Password must not be blank")
+    @Length(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
     private String password;
-    @NotBlank
-    @Length(min = 8, max = 20)
+    @NotBlank(message = "Password must not be blank")
+    @Length(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
     private String repeatPassword;
-    @NotBlank
+    @NotBlank(message = "First name must not be blank")
     private String firstName;
-    @NotBlank
+    @NotBlank(message = "Last name must not be blank")
     private String lastName;
     private String shippingAddress;
 }
