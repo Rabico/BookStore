@@ -8,7 +8,9 @@ import book.store.mapper.BookMapper;
 import book.store.model.Book;
 import book.store.repository.book.BookRepository;
 import book.store.repository.book.BookSpecificationBuilder;
+import book.store.repository.category.CategoryRepository;
 import book.store.service.BookService;
+import java.util.HashSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,10 +24,14 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder bookSpecificationBuilder;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public BookDto createBook(CreateBookRequestDto createBookRequestDto) {
         Book book = bookMapper.toModel(createBookRequestDto);
+        book.setCategories(new HashSet<>(categoryRepository.findAllById(
+                createBookRequestDto.getCategoriesId()
+        )));
         Book savedBook = bookRepository.save(book);
         return bookMapper.toDto(savedBook);
     }
@@ -44,7 +50,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto updateBookById(Long id, CreateBookRequestDto createBookRequestDto) {
+    public BookDto updateBookById(Long id, CreateBookRequestDto
+            createBookRequestDto) {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find book by id: " + id)
         );
@@ -68,7 +75,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<BookDto> search(BookSearchParametersDto params, Pageable pageable) {
+    public Page<BookDto> search(BookSearchParametersDto params,
+                                Pageable pageable) {
         Specification<Book> bookSpecification = bookSpecificationBuilder.build(params);
         return bookRepository.findAll(bookSpecification, pageable)
                 .map(bookMapper::toDto);

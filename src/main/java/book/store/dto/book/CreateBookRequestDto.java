@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Set;
 import lombok.Data;
 import org.hibernate.validator.constraints.ISBN;
 import org.hibernate.validator.constraints.URL;
@@ -28,6 +29,7 @@ public class CreateBookRequestDto {
     private String description;
     @URL(protocol = "https", message = "URL must by HTTPS protocol")
     private String coverImage;
+    private Set<Long> categoriesId;
 }
 
 
