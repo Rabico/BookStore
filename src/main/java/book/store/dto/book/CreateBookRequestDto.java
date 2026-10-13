@@ -29,7 +29,7 @@ public class CreateBookRequestDto {
     private String description;
     @URL(protocol = "https", message = "URL must by HTTPS protocol")
     private String coverImage;
-    private Set<Long> categoriesId;
+    private Set<Long> categoryIds;
 }
 
 

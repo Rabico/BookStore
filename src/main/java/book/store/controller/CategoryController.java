@@ -51,7 +51,7 @@ public class CategoryController {
     @PostMapping
     @Operation(summary = "Create category",
             description = "Creates a new category")
-    public CategoryDto createBook(@RequestBody @Valid
+    public CategoryDto createCategory(@RequestBody @Valid
                                   CreateCategoryRequestDto createCategoryRequestDto) {
         return categoryService.createCategory(createCategoryRequestDto);
     }
@@ -76,8 +76,9 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}/books")
-    @Operation(summary = "Get category by ID",
-            description = "Returns the category with the specified ID")
+    @Operation(summary = "Get books by category ID",
+            description = "Returns a paginated list of "
+                    + "books belonging to the category with the specified ID")
     public Page<BookDtoWithoutCategoryIds> getBooksByCategoryId(
             @PathVariable Long id, @ParameterObject Pageable pageable) {
         return categoryService.getBooksByCategoryId(id, pageable);

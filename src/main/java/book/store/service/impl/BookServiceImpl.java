@@ -6,11 +6,13 @@ import book.store.dto.book.CreateBookRequestDto;
 import book.store.exception.EntityNotFoundException;
 import book.store.mapper.BookMapper;
 import book.store.model.Book;
+import book.store.model.Category;
 import book.store.repository.book.BookRepository;
 import book.store.repository.book.BookSpecificationBuilder;
 import book.store.repository.category.CategoryRepository;
 import book.store.service.BookService;
 import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +31,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto createBook(CreateBookRequestDto createBookRequestDto) {
         Book book = bookMapper.toModel(createBookRequestDto);
-        book.setCategories(new HashSet<>(categoryRepository.findAllById(
-                createBookRequestDto.getCategoriesId()
-        )));
+        validateCategoryId(createBookRequestDto.getCategoryIds(), book);
         Book savedBook = bookRepository.save(book);
         return bookMapper.toDto(savedBook);
     }
@@ -62,7 +62,8 @@ public class BookServiceImpl implements BookService {
         book.setPrice(createBookRequestDto.getPrice());
         book.setDescription(createBookRequestDto.getDescription());
         book.setCoverImage(createBookRequestDto.getCoverImage());
-
+        book.setCoverImage(createBookRequestDto.getCoverImage());
+        validateCategoryId(createBookRequestDto.getCategoryIds(), book);
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -80,5 +81,15 @@ public class BookServiceImpl implements BookService {
         Specification<Book> bookSpecification = bookSpecificationBuilder.build(params);
         return bookRepository.findAll(bookSpecification, pageable)
                 .map(bookMapper::toDto);
+    }
+
+    private void validateCategoryId(Set<Long> categoryId, Book book) {
+        Set<Category> categories = new HashSet<>();
+        for (Long id : categoryId) {
+            categories.add(categoryRepository.findById(id).orElseThrow(
+                    () -> new EntityNotFoundException("Can't find category by id: " + id)
+            ));
+        }
+        book.setCategories(categories);
     }
 }
