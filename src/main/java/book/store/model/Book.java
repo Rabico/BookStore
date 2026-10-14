@@ -41,7 +41,6 @@ public class Book {
     private String coverImage;
     @Column(nullable = false)
     private boolean isDeleted = false;
-    @Column
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "books_categories",
