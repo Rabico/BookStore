@@ -48,8 +48,8 @@ public class ShoppingController {
     @Operation(summary = "Update book quantity",
             description = "Update book quantity in Shopping Cart")
     public void updateCartItemInShoppingCart(@RequestBody @Valid
-                                      UpdateCartItemDto updateCartItemDto,@PathVariable Long id) {
-        shoppingCartService.updateCartItemInShoppingCart(updateCartItemDto,id);
+                                      UpdateCartItemDto updateCartItemDto, @PathVariable Long id) {
+        shoppingCartService.updateCartItemInShoppingCart(updateCartItemDto, id);
     }
 
     @PreAuthorize("hasRole('USER')")
