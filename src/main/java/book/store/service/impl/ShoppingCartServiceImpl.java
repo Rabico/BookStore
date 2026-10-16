@@ -13,6 +13,7 @@ import book.store.repository.cart.CartItemRepository;
 import book.store.repository.cart.ShoppingCartRepository;
 import book.store.repository.user.UserRepository;
 import book.store.service.ShoppingCartService;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -37,6 +38,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCartDto addCartItemToShoppingCart(RequestCartItemDto cartItemDto) {
 
         ShoppingCart shoppingCart = createOrGetShoppingCart();
@@ -78,11 +80,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void deleteCartItemFromShoppingCart(Long cartItemId) {
         ShoppingCart shoppingCart = createOrGetShoppingCart();
-        if (cartItemRepository.findByIdAndShoppingCartId(cartItemId,
-                shoppingCart.getId()).isEmpty()) {
-            throw new EntityNotFoundException("Cart item with id " + cartItemId + " not found");
-        }
-        cartItemRepository.deleteById(cartItemId);
+        CartItem cartItem = cartItemRepository
+                .findByIdAndShoppingCartId(cartItemId, shoppingCart.getId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Cart item with id " + cartItemId + " not found"
+                ));
+        cartItemRepository.delete(cartItem);
     }
 
     private ShoppingCart createOrGetShoppingCart() {
