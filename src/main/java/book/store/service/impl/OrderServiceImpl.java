@@ -5,6 +5,7 @@ import book.store.dto.order.OrderDto;
 import book.store.dto.order.OrderItemDto;
 import book.store.dto.order.OrderStatusDto;
 import book.store.exception.EntityNotFoundException;
+import book.store.exception.OrderException;
 import book.store.mapper.OrderItemMapper;
 import book.store.mapper.OrderMapper;
 import book.store.model.CartItem;
@@ -55,6 +56,9 @@ public class OrderServiceImpl implements OrderService {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUser(user).orElseThrow(
                 () -> new EntityNotFoundException("Shopping cart not found, cannot create order"));
         Set<OrderItem> orderItems = new HashSet<>();
+        if (shoppingCart.getCartItems().isEmpty()) {
+            throw new OrderException("Shopping cart is empty, cannot create order");
+        }
         shoppingCart.getCartItems().forEach(cartItem -> {
             OrderItem orderItem = new OrderItem();
             orderItem.setBook(cartItem.getBook());
@@ -95,10 +99,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderItemDto> getOrderItems(Long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
+        User user = getUser();
+        Order order = orderRepository.findByIdAndUser(orderId, user).orElseThrow(
                 () -> new EntityNotFoundException("Order not found")
         );
-
         return order.getOrderItems().stream()
                 .map(orderItemMapper::toDto)
                 .collect(Collectors.toList());
@@ -106,10 +110,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderItemDto getOrderItem(Long orderId, Long orderItemId) {
-
-        OrderItem orderItem = orderItemRepository.findByIdAndOrderId(orderId, orderItemId)
+        User user = getUser();
+        Order order = orderRepository.findByIdAndUser(orderId, user).orElseThrow(
+                () -> new EntityNotFoundException("Order not found")
+        );
+        OrderItem orderItem = orderItemRepository
+                .findByOrderIdAndId(order.getId(), orderItemId)
                 .orElseThrow(() -> new EntityNotFoundException("Order item not found"));
-
         return orderItemMapper
                 .toDto(orderItem);
     }
