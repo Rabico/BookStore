@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-order-table
+      author: pcizminski
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_order_user
+                    references: users(id)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: status
+                  type: VARCHAR(255)
+                  defaultValue: 'PENDING'
+              - column:
+                  name: total
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_date
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  constraints:
+                    nullable: false
+                  name: shipping_address
+                  type: VARCHAR(255)

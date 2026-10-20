@@ -30,7 +30,7 @@ public class ShoppingCart {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
-    @OneToMany(mappedBy = "shoppingCart")
+    @OneToMany(mappedBy = "shoppingCart", orphanRemoval = true)
     private Set<CartItem> cartItems = new HashSet<>();
     @Column(nullable = false)
     private boolean isDeleted = false;
