@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:latest
+    image: mysql:9.7.2
     restart: always
     container_name: shop-mysql
     environment:
@@ -21,7 +21,8 @@ services:
 
   app:
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     image: bookstore:latest
     restart: on-failure
     build: .
