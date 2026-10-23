@@ -1,0 +1,7 @@
+services:
+  app:
+    ports:
+      - "127.0.0.1:${DEBUG_PORT}:${DEBUG_PORT}"
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEBUG_PORT}"
+  
